@@ -32,6 +32,14 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func appendPi() {
+        if userIsInTheMiddleOfTyping {
+            enter()
+        }
+        displayValue = M_PI
+        enter()
+    }
+    
     @IBAction func operate(sender: UIButton) {
         let operation = sender.currentTitle!
         if userIsInTheMiddleOfTyping {
@@ -42,7 +50,9 @@ class ViewController: UIViewController {
         case "÷": performOperation { $1 / $0 }
         case "+": performOperation { $1 + $0 }
         case "−": performOperation { $1 - $0 }
-        case "√": performOperation { sqrt($0) }
+        case "√": performOperation { $0 >= 0 ? sqrt($0) : $0 }
+        case "sin": performOperation { sin($0) }
+        case "cos": performOperation { cos($0) }
         default: break
         }
     }

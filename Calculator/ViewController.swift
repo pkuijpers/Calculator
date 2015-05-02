@@ -25,6 +25,13 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func appendDecimalPoint() {
+        if display.text!.rangeOfString(".") == nil {
+            display.text! += "."
+            userIsInTheMiddleOfTyping = true
+        }
+    }
+    
     @IBAction func operate(sender: UIButton) {
         let operation = sender.currentTitle!
         if userIsInTheMiddleOfTyping {

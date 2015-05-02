@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var display: UILabel!
+    @IBOutlet weak var history: UILabel!
     
     var userIsInTheMiddleOfTyping = false
     
@@ -45,29 +46,41 @@ class ViewController: UIViewController {
         if userIsInTheMiddleOfTyping {
             enter()
         }
+        
+        var performed = false
         switch operation {
-        case "×": performOperation { $1 * $0 }
-        case "÷": performOperation { $1 / $0 }
-        case "+": performOperation { $1 + $0 }
-        case "−": performOperation { $1 - $0 }
-        case "√": performOperation { $0 >= 0 ? sqrt($0) : $0 }
-        case "sin": performOperation { sin($0) }
-        case "cos": performOperation { cos($0) }
+        case "×": performed = performOperation { $1 * $0 }
+        case "÷": performed = performOperation { $1 / $0 }
+        case "+": performed = performOperation { $1 + $0 }
+        case "−": performed = performOperation { $1 - $0 }
+        case "√": performed = performOperation { $0 >= 0 ? sqrt($0) : $0 }
+        case "sin": performed = performOperation { sin($0) }
+        case "cos": performed = performOperation { cos($0) }
         default: break
+        }
+        
+        if performed {
+            appendToHistory(operation)
         }
     }
     
-    private func performOperation(operation: (Double, Double) -> Double) {
+    private func performOperation(operation: (Double, Double) -> Double) -> Bool {
         if operandStack.count >= 2 {
             displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
             enter()
+            return true
+        } else {
+            return false
         }
     }
     
-    private func performOperation(operation: Double -> Double) {
+    private func performOperation(operation: Double -> Double) -> Bool {
         if operandStack.count >= 1 {
             displayValue = operation(operandStack.removeLast())
             enter()
+            return true
+        } else {
+            return false
         }
     }
     
@@ -75,8 +88,20 @@ class ViewController: UIViewController {
     
     @IBAction func enter() {
         operandStack.append(displayValue)
+        if userIsInTheMiddleOfTyping {
+            appendToHistory(display.text!)
+        }
         userIsInTheMiddleOfTyping = false
         println("operandStack = \(operandStack)")
+    }
+    
+    private func appendToHistory(item: String) {
+        println("History is: |\(history.text)|")
+        if history.text == nil {
+            history.text = item
+        } else {
+            history.text! += " \(item)"
+        }
     }
     
     var displayValue: Double {

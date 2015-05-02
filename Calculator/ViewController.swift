@@ -64,7 +64,9 @@ class ViewController: UIViewController {
     
     var displayValue: Double {
         get {
-            return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
+            let formatter = NSNumberFormatter()
+            formatter.locale = NSLocale(localeIdentifier: "en_US")
+            return formatter.numberFromString(display.text!)!.doubleValue
         }
         set {
             display.text = "\(newValue)"

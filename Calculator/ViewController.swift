@@ -8,10 +8,12 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+public class ViewController: UIViewController {
     
-    @IBOutlet weak var display: UILabel!
+    @IBOutlet public weak var display: UILabel!
     @IBOutlet weak var history: UILabel!
+    
+    @IBOutlet public weak var piButton: UIButton!
     
     var userIsInTheMiddleOfTyping = false
     

@@ -1,13 +1,9 @@
 # Uncomment this line to define a global platform for your project
 platform :ios, '8.0'
 
-target 'Calculator' do
+link_with 'CalculatorTests'
 
-end
-
-target 'CalculatorTests' do
-  use_frameworks!
-  pod 'Quick'
-  pod 'Nimble'
-end
+use_frameworks!
+pod 'Quick', '~> 0.3.0'
+pod 'Nimble', '~> 0.4.0'
 

@@ -56,6 +56,27 @@ class CalculatorViewControllerSpec: QuickSpec {
                 expect(cvc.display.text).to(equal("99.0"))
             }
         }
+        
+        describe("displayValue") {
+            it("contains the displayed value") {
+                cvc.display.text = "123"
+                
+                expect(cvc.displayValue).to(equal(123))
+            }
+            
+            it("is nil when nothing is displayed") {
+                cvc.display.text = "";
+                
+                expect(cvc.displayValue).to(beNil())
+            }
+            it("clears the display when set to nil") {
+                cvc.display.text = "123"
+                
+                cvc.displayValue = nil
+                
+                expect(cvc.display.text).to(equal(""))
+            }
+        }
     }
     
     class MockCalculatorBrain: CalculatorBrain {

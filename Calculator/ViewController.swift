@@ -52,11 +52,10 @@ public class ViewController: UIViewController {
                     enter()
                 }
                 
-                if let result = brain.performOperation(symbol) {
-                    displayValue = result
+                let result = brain.performOperation(symbol)
+                displayValue = result
+                if (result != nil) {
                     appendToHistory(operation)
-                } else {
-                    displayValue = 0
                 }
             } else {
                 println("Unknown operation \(operation)")
@@ -70,10 +69,8 @@ public class ViewController: UIViewController {
             appendToHistory(display.text!)
         }
         userIsInTheMiddleOfTyping = false
-        if let result = brain.pushOperand(displayValue) {
-            displayValue = result
-        } else {
-            displayValue = 0
+        if let value = displayValue {
+            displayValue = brain.pushOperand(value)
         }
     }
     
@@ -86,14 +83,18 @@ public class ViewController: UIViewController {
         }
     }
     
-    var displayValue: Double {
+    public var displayValue: Double? {
         get {
             let formatter = NSNumberFormatter()
             formatter.locale = NSLocale(localeIdentifier: "en_US")
-            return formatter.numberFromString(display.text!)!.doubleValue
+            return formatter.numberFromString(display.text!)?.doubleValue
         }
         set {
-            display.text = "\(newValue)"
+            if (newValue != nil) {
+                display.text = "\(newValue!)"
+            } else {
+                display.text = ""
+            }
         }
     }
 }

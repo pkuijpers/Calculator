@@ -14,8 +14,10 @@ public class ViewController: UIViewController {
     @IBOutlet weak var history: UILabel!
     
     @IBOutlet public weak var piButton: UIButton!
+    @IBOutlet public weak var sinButton: UIButton!
     
     var userIsInTheMiddleOfTyping = false
+    public var brain = CalculatorBrain()
     
     @IBAction func appendDigit(sender: UIButton) {
         let digit = sender.currentTitle!
@@ -43,58 +45,36 @@ public class ViewController: UIViewController {
         enter()
     }
     
-    @IBAction func operate(sender: UIButton) {
-        let operation = sender.currentTitle!
-        if userIsInTheMiddleOfTyping {
-            enter()
-        }
-        
-        var performed = false
-        switch operation {
-        case "×": performed = performOperation { $1 * $0 }
-        case "÷": performed = performOperation { $1 / $0 }
-        case "+": performed = performOperation { $1 + $0 }
-        case "−": performed = performOperation { $1 - $0 }
-        case "√": performed = performOperation { $0 >= 0 ? sqrt($0) : $0 }
-        case "sin": performed = performOperation { sin($0) }
-        case "cos": performed = performOperation { cos($0) }
-        default: break
-        }
-        
-        if performed {
-            appendToHistory(operation)
+    @IBAction public func operate(sender: UIButton) {
+        if let operation = sender.currentTitle {
+            if let symbol = CalculatorBrain.Symbol(rawValue: operation) {
+                if userIsInTheMiddleOfTyping {
+                    enter()
+                }
+                
+                if let result = brain.performOperation(symbol) {
+                    displayValue = result
+                    appendToHistory(operation)
+                } else {
+                    displayValue = 0
+                }
+            } else {
+                println("Unknown operation \(operation)")
+            }
+            
         }
     }
-    
-    private func performOperation(operation: (Double, Double) -> Double) -> Bool {
-        if operandStack.count >= 2 {
-            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
-            enter()
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    private func performOperation(operation: Double -> Double) -> Bool {
-        if operandStack.count >= 1 {
-            displayValue = operation(operandStack.removeLast())
-            enter()
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    var operandStack = Array<Double>()
     
     @IBAction func enter() {
-        operandStack.append(displayValue)
         if userIsInTheMiddleOfTyping {
             appendToHistory(display.text!)
         }
         userIsInTheMiddleOfTyping = false
-        println("operandStack = \(operandStack)")
+        if let result = brain.pushOperand(displayValue) {
+            displayValue = result
+        } else {
+            displayValue = 0
+        }
     }
     
     private func appendToHistory(item: String) {

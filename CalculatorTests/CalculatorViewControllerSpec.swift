@@ -13,13 +13,16 @@ import Calculator
 class CalculatorViewControllerSpec: QuickSpec {
     override func spec() {
         var cvc: ViewController!
+        let mockBrain = MockCalculatorBrain()
+        
         beforeEach {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             cvc = storyboard.instantiateViewControllerWithIdentifier("CalculatorViewControllerId") as! ViewController
+            cvc.brain = mockBrain
             let _ = cvc.view
         }
         
-        describe("A CalculatorViewController") {
+        describe("CalculatorViewController") {
             it("can be created") {
                 expect(cvc).notTo(beNil())
             }
@@ -36,5 +39,31 @@ class CalculatorViewControllerSpec: QuickSpec {
                 expect(cvc.piButton).notTo(beNil())
             }
         }
+        
+        describe("sin button") {
+            it("is wired") {
+                expect(cvc.sinButton).notTo(beNil())
+            }
+            it("is connected to operate: action") {
+                if let actions = cvc.sinButton.actionsForTarget(cvc, forControlEvent: UIControlEvents.TouchUpInside) {
+                   expect(actions).to(contain("operate:"))
+                }
+            }
+            it("executes the sin operation") {
+                cvc.operate(cvc.sinButton)
+                
+                expect(mockBrain.lastSymbol).to(equal(CalculatorBrain.Symbol.Sin))
+                expect(cvc.display.text).to(equal("99.0"))
+            }
+        }
+    }
+    
+    class MockCalculatorBrain: CalculatorBrain {
+        var lastSymbol: Symbol?
+        override func performOperation(symbol: CalculatorBrain.Symbol) -> Double? {
+            lastSymbol = symbol
+            return 99.0
+        }
+        
     }
 }

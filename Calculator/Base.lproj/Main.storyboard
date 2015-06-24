@@ -334,6 +334,7 @@
                         <outlet property="display" destination="Ylv-DF-gTU" id="tWf-np-W58"/>
                         <outlet property="history" destination="XXc-lJ-JqS" id="7zf-vz-8Vg"/>
                         <outlet property="piButton" destination="6fa-8f-QfG" id="Fsu-VX-E5K"/>
+                        <outlet property="sinButton" destination="Fyk-uV-uqt" id="8q9-lv-eOm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

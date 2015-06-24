@@ -1,9 +1,17 @@
 plugins {
-    id "org.openbakery.xcode-plugin" version "0.11.0"
+    id "org.openbakery.xcode-plugin" version "0.11.2"
 }
 
 xcodebuild {
     target = 'Calculator'
+    scheme = 'Calculator'
+    configuration = 'Debug'
+    sdk = 'iphonesimulator'
+
+    destination {
+      name = 'iPhone 5s'
+      os = '8.*'
+    }
 }
 
 task wrapper(type: Wrapper) {

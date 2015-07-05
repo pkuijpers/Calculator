@@ -92,6 +92,48 @@ class CalculatorViewControllerSpec: QuickSpec {
             }
         }
         
+        describe(". button") {
+            it("is wired") {
+                expect(cvc.dotButton).notTo(beNil())
+            }
+            it("is connected to appendDecimalPoint action") {
+                if let actions = cvc.dotButton.actionsForTarget(cvc, forControlEvent: UIControlEvents.TouchUpInside) {
+                   expect(actions).to(contain("appendDecimalPoint"))
+                }
+            }
+            context("when display contains a digit") {
+                it("adds a decimal point") {
+                    cvc.appendDigit(cvc.oneButton);
+                    cvc.appendDecimalPoint()
+                    
+                    expect(cvc.display.text).to(equal("1."))
+                }
+            }
+            context("when display is empty") {
+                it("adds a decimal point after zero") {
+                    cvc.display.text = ""
+                    cvc.appendDecimalPoint()
+                    
+                    expect(cvc.display.text).to(equal("0."))
+                }
+            }
+            context("when user has just entered a number") {
+                it("adds a decimal point after zero") {
+                    cvc.appendPi()
+                    cvc.appendDecimalPoint()
+                    
+                    expect(cvc.display.text).to(equal("0."))
+                }
+                it("adds additional numbers after the decimal point") {
+                    cvc.appendPi()
+                    cvc.appendDecimalPoint()
+                    cvc.appendDigit(cvc.oneButton)
+                    
+                    expect(cvc.display.text).to(equal("0.1"))
+                }
+            }
+        }
+        
         describe("displayValue") {
             it("contains the displayed value") {
                 cvc.display.text = "123"

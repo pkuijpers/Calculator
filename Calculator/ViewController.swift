@@ -13,14 +13,16 @@ public class ViewController: UIViewController {
     @IBOutlet public weak var display: UILabel!
     @IBOutlet public weak var history: UILabel!
     
+    @IBOutlet public weak var oneButton: UIButton!
     @IBOutlet public weak var piButton: UIButton!
     @IBOutlet public weak var sinButton: UIButton!
     @IBOutlet public weak var cosButton: UIButton!
+    @IBOutlet public weak var dotButton: UIButton!
     
     var userIsInTheMiddleOfTyping = false
     public var brain = CalculatorBrain()
     
-    @IBAction func appendDigit(sender: UIButton) {
+    @IBAction public func appendDigit(sender: UIButton) {
         let digit = sender.currentTitle!
         
         if userIsInTheMiddleOfTyping {
@@ -31,11 +33,18 @@ public class ViewController: UIViewController {
         }
     }
     
-    @IBAction func appendDecimalPoint() {
-        if display.text!.rangeOfString(".") == nil {
+    @IBAction public func appendDecimalPoint() {
+        if (!userIsInTheMiddleOfTyping) {
+            display.text = "0"
+        }
+        if !displayContainsDecimalPoint() {
             display.text! += "."
             userIsInTheMiddleOfTyping = true
         }
+    }
+    
+    func displayContainsDecimalPoint() -> Bool {
+        return display.text!.rangeOfString(".") != nil
     }
     
     @IBAction public func appendPi() {

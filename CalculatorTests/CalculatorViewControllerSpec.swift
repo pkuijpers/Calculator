@@ -57,6 +57,23 @@ class CalculatorViewControllerSpec: QuickSpec {
             }
         }
         
+        describe("cos button") {
+            it("is wired") {
+                expect(cvc.cosButton).notTo(beNil())
+            }
+            it("is connected to operate: action") {
+                if let actions = cvc.cosButton.actionsForTarget(cvc, forControlEvent: UIControlEvents.TouchUpInside) {
+                   expect(actions).to(contain("operate:"))
+                }
+            }
+            it("executes the cos operation") {
+                cvc.operate(cvc.cosButton)
+                
+                expect(mockBrain.lastSymbol).to(equal(CalculatorBrain.Symbol.Cos))
+                expect(cvc.display.text).to(equal("99.0"))
+            }
+        }
+        
         describe("displayValue") {
             it("contains the displayed value") {
                 cvc.display.text = "123"

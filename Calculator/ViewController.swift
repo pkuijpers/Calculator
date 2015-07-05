@@ -15,6 +15,7 @@ public class ViewController: UIViewController {
     
     @IBOutlet public weak var piButton: UIButton!
     @IBOutlet public weak var sinButton: UIButton!
+    @IBOutlet public weak var cosButton: UIButton!
     
     var userIsInTheMiddleOfTyping = false
     public var brain = CalculatorBrain()

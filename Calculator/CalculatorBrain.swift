@@ -17,6 +17,7 @@ public class CalculatorBrain
         case Divide = "÷"
         case SquareRoot = "√"
         case Sin = "sin"
+        case Cos = "cos"
     }
     
     private enum Op: Printable {
@@ -47,6 +48,7 @@ public class CalculatorBrain
         knownOps[Symbol.Minus] = Op.BinaryOperation(Symbol.Minus, { $1 - $0 })
         knownOps[Symbol.SquareRoot] = Op.UnaryOperation(Symbol.SquareRoot, sqrt)
         knownOps[Symbol.Sin] = Op.UnaryOperation(Symbol.Sin, sin)
+        knownOps[Symbol.Cos] = Op.UnaryOperation(Symbol.Cos, cos)
     }
     
     private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op]) {

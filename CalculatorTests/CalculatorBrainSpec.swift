@@ -31,6 +31,10 @@ class CalculatorBrainSpec: QuickSpec {
                     brain.pushOperand(1.0)
                     expect(brain.performOperation(CalculatorBrain.Symbol.Sin)).to(equal(sin(1.0)))
                 }
+                it("calculates the cos") {
+                    brain.pushOperand(1.0)
+                    expect(brain.performOperation(CalculatorBrain.Symbol.Cos)).to(equal(cos(1.0)))
+                }
             }
         }
     }

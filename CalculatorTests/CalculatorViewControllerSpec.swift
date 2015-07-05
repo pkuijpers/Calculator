@@ -38,6 +38,24 @@ class CalculatorViewControllerSpec: QuickSpec {
             it("is wired") {
                 expect(cvc.piButton).notTo(beNil())
             }
+            it("is connected to appendPi action") {
+                if let actions = cvc.piButton.actionsForTarget(cvc, forControlEvent: UIControlEvents.TouchUpInside) {
+                   expect(actions).to(contain("appendPi"))
+                }
+            }
+            it("displays the value of PI") {
+                cvc.appendPi()
+                expect(cvc.displayValue).to(beCloseTo(M_PI))
+            }
+            
+            context("when followed by Enter") {
+                it("adds Pi to the history") {
+                    cvc.appendPi()
+                    cvc.enter()
+                    
+                    expect(cvc.history.text).to(equal("π"))
+                }
+            }
         }
         
         describe("sin button") {

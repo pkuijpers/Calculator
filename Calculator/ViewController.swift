@@ -11,7 +11,7 @@ import UIKit
 public class ViewController: UIViewController {
     
     @IBOutlet public weak var display: UILabel!
-    @IBOutlet weak var history: UILabel!
+    @IBOutlet public weak var history: UILabel!
     
     @IBOutlet public weak var piButton: UIButton!
     @IBOutlet public weak var sinButton: UIButton!
@@ -38,12 +38,13 @@ public class ViewController: UIViewController {
         }
     }
     
-    @IBAction func appendPi() {
+    @IBAction public func appendPi() {
         if userIsInTheMiddleOfTyping {
             enter()
         }
         displayValue = M_PI
-        enter()
+        brain.pushOperand(M_PI)
+        appendToHistory("π")
     }
     
     @IBAction public func operate(sender: UIButton) {
@@ -65,7 +66,7 @@ public class ViewController: UIViewController {
         }
     }
     
-    @IBAction func enter() {
+    @IBAction public func enter() {
         if userIsInTheMiddleOfTyping {
             appendToHistory(display.text!)
         }
@@ -77,7 +78,7 @@ public class ViewController: UIViewController {
     
     private func appendToHistory(item: String) {
         println("History is: |\(history.text)|")
-        if history.text == nil {
+        if history.text == nil || history.text!.isEmpty {
             history.text = item
         } else {
             history.text! += " \(item)"
